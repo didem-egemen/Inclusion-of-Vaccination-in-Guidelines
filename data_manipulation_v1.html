@@ -371,21 +371,15 @@ summary {
 
 <div id="nhanes-data" class="section level2">
 <h2>NHANES DATA</h2>
+<pre class="install"><code># install.packages(&quot;haven&quot;)
+# library(haven)
+# install.packages(&quot;tidyverse&quot;)
+# library(tidyverse)</code></pre>
+</div>
+<div id="read-data" class="section level2">
+<h2>Read data</h2>
 <p>Read NHANES dataset and create some new variables</p>
-<pre class="r"><code>library(haven)</code></pre>
-<pre><code>## Warning: package 'haven' was built under R version 3.6.2</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.3.2     ✔ purrr   0.3.3
-## ✔ tibble  3.0.3     ✔ dplyr   0.8.3
-## ✔ tidyr   1.0.0     ✔ stringr 1.4.0
-## ✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>## Warning: package 'ggplot2' was built under R version 3.6.2</code></pre>
-<pre><code>## Warning: package 'tibble' was built under R version 3.6.2</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code># newcx3to16 &lt;- read_sas(&quot;Documents/Cervix Vaccination/newcx3to16.sas7bdat&quot;,NULL)
+<pre class="read"><code># newcx3to16 &lt;- read_sas(&quot;Documents/Cervix Vaccination/newcx3to16.sas7bdat&quot;,NULL)
 
 # nhanes_women = dplyr::filter(newcx3to16,RIAGENDR==2)
 # class(nhanes_women)
@@ -394,7 +388,7 @@ summary {
 
 # vaccine = dplyr::filter(newcx3to16, RIAGENDR==2 &amp; SDDSRVYR&gt;=5)
 
-vaccine = read_sas(&quot;NHANES_WOMEN_vaccine_2007_2016.sas7bdat&quot;,NULL)  
+vaccine = read_sas(&quot;~/Inclusion-of-Vaccination-in-Guidelines/NHANES_WOMEN_vaccine_2007_2016.sas7bdat&quot;,NULL)  
 vaccine$hpv_vaccine = ifelse(is.na(vaccine$IMQ040),vaccine$IMQ060,vaccine$IMQ040)
 vaccine$agecat = as.factor(vaccine$agecat)
 vaccine$hpv16 = vaccine$LBDR16
@@ -408,7 +402,9 @@ vaccine$hpv_low = ifelse(vaccine$LBDR35==1 | vaccine$LBDR39==1 | vaccine$LBDR51=
                           ifelse(vaccine$LBDR35==3 &amp; vaccine$LBDR39==3 &amp; vaccine$LBDR51==3 &amp; vaccine$LBDR56==3 &amp; vaccine$LBDR59==3 &amp; vaccine$LBDR66==3 &amp; vaccine$LBDR68==3,3,
                                  ifelse(is.na(vaccine$LBDR35) &amp; is.na(vaccine$LBDR39) &amp; is.na(vaccine$LBDR51) &amp; is.na(vaccine$LBDR56) &amp; is.na(vaccine$LBDR59) &amp; is.na(vaccine$LBDR66) &amp; is.na(vaccine$LBDR68),NA,2)))
 
-# write_sas(vaccine, &quot;Documents/Cervix Vaccination/NHANES_WOMEN_vaccine_2007_2016.sas7bdat&quot;)</code></pre>
+# write_sas(vaccine, &quot;Documents/Cervix Vaccination/NHANES_WOMEN_vaccine_2007_2016.sas7bdat&quot;)
+</code></pre>
+<pre class="check"><code>head(vaccine$agecat)</code></pre>
 </div>
 
 

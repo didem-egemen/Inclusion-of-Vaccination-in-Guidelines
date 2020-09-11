@@ -11,12 +11,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## NHANES DATA
 
+
+```{install packages}
+# install.packages("haven")
+# library(haven)
+# install.packages("tidyverse")
+# library(tidyverse)
+```
+## Read data
+
 Read NHANES dataset and create some new variables
-
 ```{read dataset}
-library(haven)
-library(tidyverse)
-
 # newcx3to16 <- read_sas("Documents/Cervix Vaccination/newcx3to16.sas7bdat",NULL)
 
 # nhanes_women = dplyr::filter(newcx3to16,RIAGENDR==2)
@@ -26,7 +31,7 @@ library(tidyverse)
 
 # vaccine = dplyr::filter(newcx3to16, RIAGENDR==2 & SDDSRVYR>=5)
 
-vaccine = read_sas("NHANES_WOMEN_vaccine_2007_2016.sas7bdat",NULL)  
+vaccine = read_sas("~/Inclusion-of-Vaccination-in-Guidelines/NHANES_WOMEN_vaccine_2007_2016.sas7bdat",NULL)  
 vaccine$hpv_vaccine = ifelse(is.na(vaccine$IMQ040),vaccine$IMQ060,vaccine$IMQ040)
 vaccine$agecat = as.factor(vaccine$agecat)
 vaccine$hpv16 = vaccine$LBDR16
@@ -45,3 +50,6 @@ vaccine$hpv_low = ifelse(vaccine$LBDR35==1 | vaccine$LBDR39==1 | vaccine$LBDR51=
 ```
 
 
+```{check the dataset}
+head(vaccine$agecat)
+```
