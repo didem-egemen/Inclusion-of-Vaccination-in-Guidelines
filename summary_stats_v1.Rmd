@@ -11,18 +11,97 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## SUMMARY STATISTICS AND TABLES FOR NHANES DATASET
 
+Let's create the survey object,
 
+```{survey object}
+library(survey)
 
-```{r cars}
-summary(cars)
+vac_design <- svydesign(id=~SDMVPSU, strata=~SDMVSTRA, weights=~WTMEC2YR, data=vaccine, nest=TRUE)
+summary(vac_design)
 ```
 
-## Including Plots
+## Age
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{tables for age}
+mean_age = svymean(~RIDAGEYR, vac_design)
+age_table = svytable(~agecat, vac_design)
+names(age_table) = c("Age Grp 18-24", "Age Grp 25-29", "Age Grp 30-34", "Age Grp 35-39", 
+                     "Age Grp 40-44","Age Grp 45-49", "Age Grp 50-54", "Age Grp 55-59")
+age_table
+age_vac_table = svytable(~agecat+hpv_vaccine, vac_design)
+row.names(age_vac_table) = c("Age Grp 18-24", "Age Grp 25-29", "Age Grp 30-34", "Age Grp 35-39", 
+                       "Age Grp 40-44","Age Grp 45-49", "Age Grp 50-54", "Age Grp 55-59")
+colnames(age_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+age_vac_table
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## vaccine
+
+
+```{tables for vaccine status}
+vac_status = svytable(~hpv_vaccine, vac_design)
+names(vac_status) = c("Yes", "No", "Refused", "Don't Know")
+vac_status
+
+```
+
+## HPV positive/negative (roche)
+
+
+```{tables for hpv}
+rochehpv_table = svytable(~LBDRPCR,vac_design)
+names(rochehpv_table) = c("Positive", "Negative", "Inadequate")
+rochehpv_table
+rochehpv_vac_table = svytable(~LBDRPCR+hpv_vaccine,vac_design)
+row.names(rochehpv_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(rochehpv_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+rochehpv_vac_table
+```
+
+## HPV genotype
+
+
+```{tables for hpv genotype}
+hpv16_table = svytable(~hpv16, vac_design)
+names(hpv16_table) = c("Positive", "Negative", "Inadequate")
+hpv16_table
+hpv16_vac_table = svytable(~hpv16+hpv_vaccine, vac_design)
+row.names(hpv16_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(hpv16_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+hpv16_vac_table
+
+hpv18_table = svytable(~hpv18, vac_design)
+names(hpv18_table) = c("Positive", "Negative", "Inadequate")
+hpv18_table
+hpv18_vac_table = svytable(~hpv18+hpv_vaccine, vac_design)
+row.names(hpv18_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(hpv18_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+hpv18_vac_table
+
+hpv45_table = svytable(~hpv45, vac_design)
+names(hpv45_table) = c("Positive", "Negative", "Inadequate")
+hpv45_table
+hpv45_vac_table = svytable(~hpv45+hpv_vaccine, vac_design)
+row.names(hpv45_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(hpv45_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+hpv45_vac_table
+
+hpv_high_table = svytable(~hpv_high, vac_design)
+names(hpv_high_table) = c("Positive", "Negative", "Inadequate")
+hpv_high_table
+hpv_high_vac_table = svytable(~hpv_high+hpv_vaccine, vac_design)
+row.names(hpv_high_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(hpv_high_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+hpv_high_vac_table
+
+hpv_low_table = svytable(~hpv_low, vac_design)
+names(hpv_low_table) = c("Positive", "Negative", "Inadequate")
+hpv_low_table
+hpv_low_vac_table = svytable(~hpv_low+hpv_vaccine, vac_design)
+row.names(hpv_low_vac_table) = c("Positive", "Negative", "Inadequate")
+colnames(hpv_low_vac_table) = c("Yes", "No", "Refused", "Don't Know")
+hpv_low_vac_table
+```
