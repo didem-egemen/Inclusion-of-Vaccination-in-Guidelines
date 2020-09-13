@@ -9,21 +9,26 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r message=FALSE,warning=FALSE}
+library(survey)
+library(haven)
+library(tidyverse)
+vaccine = read_sas("NHANES_WOMEN_vaccine_2007_2016_v2.sas7bdat",NULL)
+```
 ## SUMMARY STATISTICS AND TABLES FOR NHANES DATASET
 
 Let's create the survey object,
 
-```{survey object}
-library(survey)
-
-vac_design <- svydesign(id=~SDMVPSU, strata=~SDMVSTRA, weights=~WTMEC2YR, data=vaccine, nest=TRUE)
-summary(vac_design)
+```{r}
+vaccine$weights = vaccine$WTMEC2YR/5
+vac_design <- svydesign(id=~SDMVPSU, strata=~SDMVSTRA, weights=~weights, data=vaccine, nest=TRUE)
+vac_design
 ```
 
 ## Age
 
 
-```{tables for age}
+```{r}
 mean_age = svymean(~RIDAGEYR, vac_design)
 age_table = svytable(~agecat, vac_design)
 names(age_table) = c("Age Grp 18-24", "Age Grp 25-29", "Age Grp 30-34", "Age Grp 35-39", 
@@ -41,7 +46,7 @@ age_vac_table
 ## vaccine
 
 
-```{tables for vaccine status}
+```{r}
 vac_status = svytable(~hpv_vaccine, vac_design)
 names(vac_status) = c("Yes", "No", "Refused", "Don't Know")
 vac_status
@@ -51,7 +56,7 @@ vac_status
 ## HPV positive/negative (roche)
 
 
-```{tables for hpv}
+```{r}
 rochehpv_table = svytable(~LBDRPCR,vac_design)
 names(rochehpv_table) = c("Positive", "Negative", "Inadequate")
 rochehpv_table
@@ -64,7 +69,7 @@ rochehpv_vac_table
 ## HPV genotype
 
 
-```{tables for hpv genotype}
+```{r}
 hpv16_table = svytable(~hpv16, vac_design)
 names(hpv16_table) = c("Positive", "Negative", "Inadequate")
 hpv16_table
