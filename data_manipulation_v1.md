@@ -1,26 +1,24 @@
----
-title: "Data_manipulation"
-author: "DE"
-date: "9/11/2020"
-output: rmarkdown::github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Data\_manipulation
+================
+DE
+9/11/2020
 
 ## NHANES DATA
 
-
-```{r message=FALSE,warning=FALSE}
+``` r
 library(haven)
 library(tidyverse)
 ```
+
 ## Read data
 
 Read NHANES dataset and create some new variables.
-"NHANES_WOMEN_vaccine_2007_2016.sas7bdat" dataset is the subset the original dataset which includes data from only women and between years 2007 to 2016.
-```{r}
+“NHANES\_WOMEN\_vaccine\_2007\_2016.sas7bdat” dataset is the subset
+the original dataset which includes data from only women and between
+years 2007 to
+2016.
+
+``` r
 vaccine = read_sas("~/Inclusion-of-Vaccination-in-Guidelines/NHANES_WOMEN_vaccine_2007_2016.sas7bdat",NULL)  
 # combine the vaccination status variables
 vaccine$hpv_vaccine = ifelse(is.na(vaccine$IMQ040),vaccine$IMQ060,vaccine$IMQ040)
@@ -46,4 +44,3 @@ vaccine$hpv_low = ifelse(vaccine$LBDR35==1 | vaccine$LBDR39==1 | vaccine$LBDR51=
 write_sas(vaccine, "NHANES_WOMEN_vaccine_2007_2016_v2.sas7bdat")
 # save the dataset with new variables
 ```
-
