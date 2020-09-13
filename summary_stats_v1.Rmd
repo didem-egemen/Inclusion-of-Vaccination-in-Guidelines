@@ -2,7 +2,7 @@
 title: "summary_stats"
 author: "DE"
 date: "9/11/2020"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
